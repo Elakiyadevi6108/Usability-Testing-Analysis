@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Serenity | Interactive Prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="mobile-container">
+        <!-- Splash Screen -->
+        <section id="screen-splash" class="screen active">
+            <div class="splash-content">
+                <div class="logo-circle"></div>
+                <h1 class="brand-title">Serenity</h1>
+                <p class="brand-subtitle">Find your inner peace</p>
+            </div>
+        </section>
+
+        <!-- Login Screen -->
+        <section id="screen-login" class="screen slide-up">
+            <div class="screen-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to continue your journey.</p>
+            </div>
+            <form class="login-form" onsubmit="event.preventDefault(); navigateTo('home', 'slide-left');">
+                <div class="demo-hint">🔑 Demo credentials pre-filled below</div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" value="user@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" value="password123" required>
+                </div>
+                <button type="submit" id="btn-login" class="btn-primary w-100">Log In</button>
+            </form>
+            <div class="screen-footer">
+                <p>Don't have an account? <a href="#" onclick="navigateTo('signup', 'slide-left'); return false;">Sign up</a></p>
+            </div>
+        </section>
+
+        <!-- Home Screen -->
+        <section id="screen-home" class="screen slide-left">
+            <header class="home-header">
+                <div class="user-greeting">
+                    <p>Good Morning,</p>
+                    <h2>Alex</h2>
+                </div>
+                <div class="avatar" onclick="navigateTo('progress', 'slide-left')" title="View Progress">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Alex's profile">
+                </div>
+            </header>
+            
+            <main class="home-content scrollable">
+                <div class="search-bar">
+                    <div class="search-wrapper">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" placeholder="Search for meditations..." aria-label="Search meditations">
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <h3>Daily Recommendation</h3>
+                </div>
+                <div class="card hero-card" onclick="navigateTo('session', 'fade')">
+                    <div class="card-bg"></div>
+                    <div class="card-content">
+                        <h4>Deep Relaxation</h4>
+                        <p>15 min • Sleep</p>
+                        <button class="btn-icon">▶</button>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <h3>Explore</h3>
+                    <span class="scroll-hint">Swipe → to see more</span>
+                </div>
+                <div class="horizontal-scroll">
+                    <div class="card mini-card" onclick="navigateTo('session', 'fade')" role="button" aria-label="Start Focus meditation, 10 minutes">
+                        <div class="card-icon" style="background: #dbeafe; color: #1d4ed8;">Focus</div>
+                        <p>10 min</p>
+                    </div>
+                    <div class="card mini-card" onclick="navigateTo('session', 'fade')" role="button" aria-label="Start Anxiety relief meditation, 20 minutes">
+                        <div class="card-icon" style="background: #fce7f3; color: #9d174d;">Anxiety</div>
+                        <p>20 min</p>
+                    </div>
+                    <div class="card mini-card" onclick="navigateTo('session', 'fade')" role="button" aria-label="Start Morning meditation, 5 minutes">
+                        <div class="card-icon" style="background: #fef3c7; color: #92400e;">Morning</div>
+                        <p>5 min</p>
+                    </div>
+                    <div class="card mini-card" onclick="navigateTo('session', 'fade')" role="button" aria-label="Start Sleep meditation, 30 minutes">
+                        <div class="card-icon" style="background: #ede9fe; color: #5b21b6;">Sleep</div>
+                        <p>30 min</p>
+                    </div>
+                </div>
+            </main>
+
+            <nav class="bottom-nav">
+                <div class="nav-item active" data-target="home">Home</div>
+                <div class="nav-item" data-target="progress">Progress</div>
+            </nav>
+        </section>
+
+        <!-- Session Screen -->
+        <section id="screen-session" class="screen fade">
+            <header class="transparent-header">
+                <button class="btn-back" onclick="navigateTo('home', 'fade')" aria-label="Go back to home">← Back</button>
+            </header>
+            <div class="session-content">
+                <div class="breathing-circle" aria-hidden="true">
+                    <span>Breathe</span>
+                </div>
+                <h2 class="session-title">Deep Relaxation</h2>
+                <p class="session-time" id="session-timer">15:00</p>
+
+                <div class="player-progress">
+                    <span class="progress-label">0:00</span>
+                    <input type="range" id="session-scrubber" class="scrubber" min="0" max="100" value="0" aria-label="Session progress">
+                    <span class="progress-label">15:00</span>
+                </div>
+                
+                <div class="player-controls">
+                    <button class="btn-circle" aria-label="Skip backward 15 seconds">⏮</button>
+                    <button class="btn-circle play-btn" id="btn-play" aria-label="Play session" onclick="togglePlay(this)">▶</button>
+                    <button class="btn-circle" aria-label="Skip forward 15 seconds">⏭</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Screen -->
+        <section id="screen-progress" class="screen slide-left">
+            <header class="standard-header">
+                <h2>Your Progress</h2>
+            </header>
+            
+            <main class="progress-content scrollable">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>12</h3>
+                        <p>Day Streak 🔥</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>45</h3>
+                        <p>Sessions</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>6.5h</h3>
+                        <p>Total Time</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>4.8★</h3>
+                        <p>Avg Rating</p>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <h3>Recent History</h3>
+                </div>
+                <div class="history-list">
+                    <div class="history-item">
+                        <div class="history-info">
+                            <h4>Morning Clarity</h4>
+                            <p>Today</p>
+                        </div>
+                        <span>10 min</span>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-info">
+                            <h4>Deep Sleep</h4>
+                            <p>Yesterday</p>
+                        </div>
+                        <span>20 min</span>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-info">
+                            <h4>Focus Flow</h4>
+                            <p>2 days ago</p>
+                        </div>
+                        <span>15 min</span>
+                    </div>
+                </div>
+                
+                <button id="btn-logout" class="btn-outline w-100 mt-2" onclick="navigateTo('login', 'slide-up')">Log Out</button>
+            </main>
+
+            <nav class="bottom-nav" aria-label="Main navigation">
+                <div class="nav-item" data-target="home" role="button">Home</div>
+                <div class="nav-item active" data-target="progress" role="button">Progress</div>
+            </nav>
+        </section>
+    <!-- Sign Up Screen (new, wired from Login) -->
+    <section id="screen-signup" class="screen slide-left">
+        <div class="screen-header" style="padding-top:2rem;">
+            <button class="btn-back" onclick="navigateTo('login', 'slide-right')">← Back</button>
+            <h2 style="margin-top:1rem;">Create Account</h2>
+            <p>Start your mindfulness journey today.</p>
+        </div>
+        <form class="login-form" onsubmit="event.preventDefault(); navigateTo('home', 'slide-left');" style="padding:1.5rem;">
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Jane Doe" required id="signup-name">
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" placeholder="jane@example.com" required id="signup-email">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="Create a password" required id="signup-password">
+            </div>
+            <button type="submit" id="btn-signup" class="btn-primary w-100">Create Account</button>
+        </form>
+    </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
